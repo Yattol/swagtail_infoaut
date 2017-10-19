@@ -45,7 +45,6 @@ class PostsIndexPage(Page):
 
     def serve(self, request):
         postpages = self.get_children().live().order_by('-first_published_at')
-        print(postpages)
 
         tag = request.GET.get('tag')
         if tag:
@@ -55,9 +54,14 @@ class PostsIndexPage(Page):
         if category:
             postpages = postpages.filter(postpage__categorie__name=category)
 
+        editorial = self.get_children().live().order_by('-first_published_at').filter(
+            postpage__categorie__name="Editoriale"
+        ).first()
+
         return render(request, self.template, {
             'page': self,
             'postpages': postpages,
+            'editorial': editorial,
         })
 
     content_panels = Page.content_panels + [
