@@ -1,6 +1,7 @@
 {% extends "posts/base.html" %}
 
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load embed_video_tags %}
 
 {% block body_class %}template-postpage{% endblock %}
 
@@ -24,6 +25,23 @@
     {{ page.body|richtext }}
 
     <hr />
+
+    <div>
+      {%if page.video.url %}
+      {% video page.video.url as video %}
+      <h3>Video</h3>   
+        {% video video 'small'%} 
+      {% endvideo %}
+      {% endif %}
+    </div>
+
+    <div>
+      {%if page.main_image %}
+      <h3>Immagini</h3>
+      {% image page.main_image width-400 %}
+      {% endif %}
+    </div>
+
 
     <div>
       <h3>Link Correlati</h3>

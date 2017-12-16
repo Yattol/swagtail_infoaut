@@ -12,6 +12,8 @@ from wagtail.wagtailadmin.edit_handlers import FieldPanel, InlinePanel, MultiFie
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailsearch import index
 from wagtail.wagtailsnippets.models import register_snippet
+from wagtail_embed_videos.edit_handlers import EmbedVideoChooserPanel
+
 
 @register_snippet #gestisce le categorie dei post
 class PostCategory(models.Model):
@@ -71,14 +73,22 @@ class PostsIndexPage(Page):
     subpage_types = ['PostPage']  #solo pagine del tipo dato sono creabili da questa classe
 
 class PostPageTag(TaggedItemBase): 
-    content_object = ParentalKey('Postpage', related_name='tagged_items') #parental key è come foreign key, lega i tag a PostPage, in più rende questa classe child di PostPage
+    content_object = ParentalKey('PostPage', related_name='tagged_items') #parental key è come foreign key, lega i tag a PostPage, in più rende questa classe child di PostPage
     
 class PostPage(Page): 
     data = models.DateTimeField('post data') #bisogna dargli dei limiti perchè per ora può essere messa nel passato e nel futuro 
-    intro = models.CharField(max_length=300) #non so, lo lasciamo? è utile? 
+    intro = models.CharField(max_length=300) #
     body = RichTextField(blank=True) #campo per il testo
-    tags = ClusterTaggableManager(through=PostPageTag, blank=True) #aggiunge il campo tags 
+    tags = ClusterTaggableManager(through=PostPageTag, blank=True) 
     categorie = ParentalManyToManyField('posts.PostCategory', blank=True)
+    video = models.ForeignKey(
+        'wagtail_embed_videos.EmbedVideo',
+        verbose_name="Video",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -107,8 +117,13 @@ class PostPage(Page):
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
         InlinePanel('gallery_images', label='Galleria immagini'), #per images serve Inline o fa casino
+        EmbedVideoChooserPanel('video'),
         InlinePanel('related_links', label='Link correlati') #link utili
     ]
+    
+    parent_page_types = [] #no child pages can be created 
+    subpage_types = []
+
 
 class PostPageRelatedLink(Orderable):
     page = ParentalKey(PostPage, related_name='related_links')

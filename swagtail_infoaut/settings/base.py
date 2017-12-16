@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'embed_video',
+    'wagtail_embed_videos',
 
     'django.contrib.admin',
     'django.contrib.auth',

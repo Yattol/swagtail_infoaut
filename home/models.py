@@ -6,8 +6,6 @@ from wagtail.wagtailcore.models import Page
 from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel
 
-
-
 class HomePage(Page):
     body = RichTextField(blank=True)
 
@@ -15,5 +13,5 @@ class HomePage(Page):
         FieldPanel('body', classname = 'full')
     ]
 
-    parent_page_types = [] # questi due insieme con liste vuote impediscono alla pagina Home di creare pagine figlie 
-    subpage_types = []     #di qualsiasi tipo
+   # parent_page_types = [] # questi due insieme con liste vuote impediscono alla pagina Home di creare pagine figlie 
+   # subpage_types = []     #di qualsiasi tipo
