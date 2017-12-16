@@ -121,7 +121,7 @@ class PostPage(Page):
         InlinePanel('related_links', label='Link correlati') #link utili
     ]
     
-    parent_page_types = [] #no child pages can be created 
+    #no child pages can be created 
     subpage_types = []
 
 
