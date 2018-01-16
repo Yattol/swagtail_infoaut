@@ -58,7 +58,7 @@ class PostsIndexPage(Page):
 
         editorial = self.get_children().live().order_by('-first_published_at').filter(
             postpage__categorie__name="Editoriale"
-        ).first()
+        )
 
         return render(request, self.template, {
             'page': self,
@@ -121,7 +121,7 @@ class PostPage(Page):
         InlinePanel('related_links', label='Link correlati') #link utili
     ]
     
-    parent_page_types = [] #no child pages can be created 
+    #no child pages can be created 
     subpage_types = []
 
 
